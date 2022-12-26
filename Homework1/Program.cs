@@ -8,3 +8,78 @@
 // 9 5 3 2
 // 8 4 4 2
 
+// Задачу можно решить как минимум тремя способами. 
+// 1. функцией Array.Sort() сортировать строки в порядке возрастания, а потом выполнить переворот массива. (еще не делали но понятно как)
+// 2. Инициализировать вспомогательную переменную и методом сравнения переставлять переменные. (уже делали раньше)
+// 3. Взялся за самый на мой взгляд тяжелый. Инициализировать вспомагательный массив и записывать в него максимальную переменную каждую итерацию
+// при этом обнулять элементы которые были перенесены в исходном массиве. После сортировки записать отсортированные элементы из
+// вспомогательного в исходный массив обратно.
+// Все это делал при помощи циклов for дабы научиться работать с циклами в циклах. Сложностей было много но вроде получилось.
+
+
+void PrintArray(int[,] arr) //  метод вывода массива на консоль. Использую два раза.
+{
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+        for (int j = 0; j < arr.GetLength(1); j++)
+        {
+            Console.Write($"{arr[i, j]} ");
+        }
+        Console.WriteLine();
+    }
+}
+
+Console.Clear();
+
+int[,] arr = new int[5, 5];  
+Random rnd = new Random();
+
+for (int i = 0; i < arr.GetLength(0); i++)
+{
+    for (int j = 0; j < arr.GetLength(1); j++)
+    {
+        arr[i, j] = rnd.Next(10, 99);
+    }
+}
+
+Console.WriteLine();
+Console.WriteLine("Вывод генерируемого массива:");
+PrintArray(arr);
+
+
+int[] HelpArr = new int[arr.GetLength(0)];
+
+for (int i = 0; i < arr.GetLength(0); i++) // for в for вместо Array.Sort() в порядке возрастания + переворот.
+{
+
+    for (int j1 = 0; j1 < arr.GetLength(1); j1++)
+    {
+        int MaxNumber = 0;
+
+        int ind = 0;
+
+        for (int j2 = 0; j2 < arr.GetLength(1); j2++)
+        {
+            if (MaxNumber < arr[i, j2])
+            {
+                MaxNumber = arr[i, j2];
+                ind = j2;
+            }
+
+        }
+
+        arr[i, ind] = 0;
+
+        HelpArr[j1] = MaxNumber;
+    
+    }
+
+    for (int k = 0; k < arr.GetLength(1); k++) // Можно использовать Array.Copy();
+    {
+        arr[i, k] = HelpArr[k];
+    }
+
+}
+Console.WriteLine();
+Console.WriteLine("Вывод отсортированного массива:");
+PrintArray(arr);
